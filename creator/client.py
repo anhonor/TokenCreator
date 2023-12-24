@@ -155,10 +155,10 @@ class Client:
           **({'X-Fingerprint': this.experiments.json().get('fingerprint')} if this.experiments.json().get('fingerprint') else {})
           }), json = {'token': token, 'captcha_key': captcha_key})
       
-      def acceptAgreements(this) -> tls_client.response.Response:
+      def acceptAgreements(this, token: str) -> tls_client.response.Response:
           return this.client.patch('https://discord.com/api/v9/users/@me/agreements', headers = this.__construct_headers__({
              'Accept': '*/*',
-             'Authorization': this.token, 
+             'Authorization': token, 
              'Connection': 'keep-alive',
              'Content-Type': 'application/json',
              'Cookie': this.__construct_cookies__(this.cookies.cookies),
