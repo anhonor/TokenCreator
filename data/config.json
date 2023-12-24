@@ -1,0 +1,15 @@
+{
+    "threads": 25,
+    "thread_retry_delay": 0.25,
+
+    "global_name": "",
+    "invite": "",
+
+    "captcha_key": "",
+    "captcha_provider": "Capsolver",
+
+    "discord_email_verification_attempts": 5,
+    "discord_email_verification_attempt_delay": 1.5,
+    "mailmask_email_verification_attempts": 5,
+    "mailmask_email_verification_attempt_delay": 1.5
+}
