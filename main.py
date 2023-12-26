@@ -26,7 +26,7 @@ def __solve_captcha__(site_key: str = DISCORD_SITE_KEY, site_url: str = DISCORD_
        task_id = capmonster.__create_task__(site_key, site_url)
        if not task_id:
           return
-       captcha_key = capmonster.__get_task_result__(task_id.json()['taskId'])
+       captcha_key = capmonster.__get_task_result__(task_id)
        if captcha_key:
           console.__success__('Captcha Solved: {}** ({}s)'.format(captcha_key[0][:35], captcha_key[1]))
           return captcha_key[0]
