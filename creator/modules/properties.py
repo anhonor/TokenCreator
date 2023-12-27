@@ -21,7 +21,7 @@ class Properties:
       def __get_custom_properties__(this, data: dict = {}) -> str:
           return base64.b64encode(json.dumps({**data}, separators = (',', ':')).encode()).decode() + '='
 
-      def __get_super_properties__(this, additional: dict = {}):
+      def __get_super_properties__(this, additional: dict = {}) -> str:
           agent = ua_parser.user_agent_parser.Parse(this.agent)
           return base64.b64encode(json.dumps({
                'os': agent['os']['family'],
