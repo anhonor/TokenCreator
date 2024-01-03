@@ -19,12 +19,19 @@ class Capsolver:
       def __get_balance__(this) -> int | None:
           return requests.get('https://api.capsolver.com/getBalance', headers = {'Host': 'api.capsolver.com', 'Content-Type': 'application/json'}, json = this.__base_payload__()).json().get('balance')
 
-      def __create_task__(this, site_key: str = DISCORD_SITE_KEY, site_url: str = DISCORD_SITE_URL) -> int | bool:
+      def __create_task__(this, site_key: str = DISCORD_SITE_KEY, site_url: str = DISCORD_SITE_URL, proxy: str | None = None) -> int | bool:
           return requests.post('https://api.capsolver.com/createTask', headers = {'Host': 'api.capsolver.com', 'Content-Type': 'application/json'}, json = this.__base_payload__({
              'task': {
                 'websiteURL': site_url,
                 'websiteKey': site_key,
-                'type': 'HCaptchaTaskProxyless',
+                'type': 'HCaptchaTask' if proxy else 'HCaptchaTaskProxyless',
+                **({
+                    'proxyType': 'http',
+                    'proxyLogin': proxy.split(':')[0], 
+                    'proxyPassword': proxy.split(':')[1].split('@')[0], 
+                    'proxyAddress': proxy.split('@')[1].split(':')[0],
+                    'proxyPort': int(proxy.split('@')[1].split(':')[1])
+                } if proxy else {})
              }
           })).json().get('taskId')
 
@@ -50,12 +57,19 @@ class Capmonster:
       def __get_balance__(this) -> int | None:
           return requests.get('https://api.capmonster.cloud/getBalance', json = this.__base_payload__()).json().get('balance')
 
-      def __create_task__(this, site_key: str = DISCORD_SITE_KEY, site_url: str = DISCORD_SITE_URL) -> int | bool:
+      def __create_task__(this, site_key: str = DISCORD_SITE_KEY, site_url: str = DISCORD_SITE_URL, proxy: str | None = None) -> int | bool:
           return requests.post('https://api.capmonster.cloud/createTask', json = this.__base_payload__({
              'task': {
                 'websiteURL': site_url,
                 'websiteKey': site_key,
-                'type': 'HCaptchaTaskProxyless',
+                'type': 'HCaptchaTask' if proxy else 'HCaptchaTaskProxyless',
+              **({
+                    'proxyType': 'http',
+                    'proxyLogin': proxy.split(':')[0], 
+                    'proxyPassword': proxy.split(':')[1].split('@')[0], 
+                    'proxyAddress': proxy.split('@')[1].split(':')[0],
+                    'proxyPort': int(proxy.split('@')[1].split(':')[1])
+              } if proxy else {})
              }
           })).json().get('taskId')
 
