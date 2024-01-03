@@ -23,7 +23,7 @@ def __solve_captcha__(site_key: str = DISCORD_SITE_KEY, site_url: str = DISCORD_
     
     if config['captcha_provider'].upper() == 'CAPMONSTER':
        capmonster = Capmonster(config['captcha_key'])
-       task_id = capmonster.__create_task__(site_key, site_url)
+       task_id = capmonster.__create_task__(site_key, site_url, None if config['captcha_proxyless'] else __get_proxy__())
        if not task_id:
           return
        captcha_key = capmonster.__get_task_result__(task_id)
