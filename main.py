@@ -12,7 +12,7 @@ console = Console()
 def __solve_captcha__(site_key: str = DISCORD_SITE_KEY, site_url: str = DISCORD_SITE_URL) -> str | None:
     if config['captcha_provider'].upper() == 'CAPSOLVER':
        capsolver = Capsolver(config['captcha_key'])
-       task_id = capsolver.__create_task__(site_key, site_url)
+       task_id = capsolver.__create_task__(site_key, site_url, None if config['captcha_proxyless'] else __get_proxy__())
        if not task_id:
           return
        captcha_key = capsolver.__get_task_result__(task_id)
@@ -39,7 +39,6 @@ class Sequence:
               try:
                 cloudflare_ray = str(cloudflare.getRay().headers.get('Cf-Ray')).split('-')[0]
                 cloudflare_clearance = cloudflare.getClearance(cloudflare_ray)
-                print(cloudflare_clearance.cookies)
                 if len(cloudflare_clearance.cookies):
                    console.__success__('Retrieved Clearence ({})'.format(cloudflare_clearance.cookies.get('cf_clearance')))
                 else:
@@ -122,8 +121,15 @@ class Sequence:
                      captcha_key = __solve_captcha__(DISCORD_EMAIL_SITE_KEY)
                      verify = client.verifyEmail(verification_token, captcha_key)
                      if verify.json().get('token'):
-                        open('./data/output/tokens-verified.txt', 'a+').write('{}:{}:{}\n'.format(signup.json()['token'], mailmask[0], password))
+                        open('./data/output/tokens-verified.txt', 'a+').write('{}:{}:{}\n'.format(verify.json()['token'], mailmask[0], password))
                         console.__success__('Token Verified: {} ({}:{})'.format(verify.json()['token'], mailmask[0], password))
+                        
+                        agreements = client.acceptAgreements(signup.json()['token'])
+                        if agreements.status_code in [200, 201, 202, 203, 204]:
+                           console.__success__('Token Unlocked: {} ({}:{})'.format(verify.json()['token'], mailmask[0], password), v1 = False)
+                           open('./data/output/tokens-unlocked.txt', 'a+').write('{}:{}:{}\n'.format(verify.json()['token'], mailmask[0], password))
+                        else:
+                           console.__failure__('Token Locked: {} ({}:{})'.format(verify.json()['token'], mailmask[0], password))
                      else:
                         console.__failure__('Token Not Verified: {}'.format(signup.json()['token']))
                   else:
@@ -136,7 +142,7 @@ class Sequence:
 def __main__():
     while 1:
        sequence = Sequence()
-       sequence.__start__()
+       sequence = sequence.__start__()
        time.sleep(config['thread_retry_delay'])
 
 for thread in range(config['threads']):
