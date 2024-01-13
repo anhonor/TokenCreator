@@ -8,7 +8,7 @@ import websocket
 from creator.modules.properties import Properties
 
 config = json.load(open('./data/config.json', 'r'))
-proxies = list(proxy for proxy in open('./data/proxies.txt', 'r').read().split('\n'))
+proxies = list(proxy.strip() for proxy in open('./data/proxies.txt', 'r').readlines())
 
 def __get_proxy__() -> str | None:
     if len(proxies):
