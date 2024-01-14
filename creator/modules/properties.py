@@ -5,12 +5,12 @@ import requests
 import ua_generator
 import ua_parser.user_agent_parser
 
-def __get_build_number__() -> str:
+def __get_build_number__() -> int:
     login_page = requests.get('https://discord.com/login')
-    asset_file = 'https://discord.com/assets/' + re.compile(r'assets/+([a-z0-9\.]+)\.js').findall(login_page.text)[94] + '.js'
+    asset_file = 'https://discord.com/assets/' + re.compile(r'assets/(sentry\.\w+)\.js').findall(login_page.text)[0] + '.js'
     asset_file = requests.get(asset_file)
-    build_numb = asset_file.text.split('".concat("')[1].split('"')[0]
-    return build_numb
+    build_numb = re.findall(r'buildNumber\D+(\d+)"', asset_file.text)
+    return int(build_numb[0])
 
 build_number = __get_build_number__()
 
