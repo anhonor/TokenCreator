@@ -1,4 +1,5 @@
 # `TOKENCREATOR`
+https://t.me/discordfunny
 ## `✴️` `INTRODUCTION`
 **TokenCreator** is a simple tool used for creating unlocked and email verified tokens simultaneously. The program is comepletely requests based, so you can leave the program running and do anything you like while it is.
 ## `✴️` `REQUIREMENTS`
