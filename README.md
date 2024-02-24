@@ -22,7 +22,7 @@ https://t.me/discordfunny
     // DON'T CHANGE IF YOU DON'T UNDERSTAND
     "discord_email_verification_attempts": 5,
     "discord_email_verification_attempt_delay": 3,
-    "mailmask_email_verification_attempts": 10,
-    "mailmask_email_verification_attempt_delay": 2.5
+    "mailmask_search_attempts": 10,
+    "mailmask_search_attempt_delay": 2.5
 }
 ```
