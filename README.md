@@ -17,7 +17,7 @@ https://t.me/discordfunny
 
     "captcha_key": "", // Paste Capmonster or Capsolver Key
     "captcha_provider": "", // Capmonster or Capsolver
-    "captcha_proxyless": false, // Enables Proxied Solving -- [Optional]
+    "captcha_proxyless": true, // Enables Proxied Solving -- [Optional]
 
     // DON'T CHANGE IF YOU DON'T UNDERSTAND
     "discord_email_verification_attempts": 5,
